@@ -2,7 +2,7 @@
 
 > A browser game that trains you to spot real Malaysian scams before they fool you.
 
-**[Live Demo](https://YOUR_USERNAME.github.io/tipu-atau-betul)** · Built for the Hack Club Stardance Challenge 2026
+**[Live Demo](https://Ha21l.github.io/tipu-atau-betul)** · Built for the Hack Club Stardance Challenge 2026
 
 ---
 
