@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipu atau Betul?</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <!-- ================================
+         SCREEN 1: MENU
+    ================================ -->
+    <div id="menu-screen" class="screen active">
+      <div class="menu-container">
+
+        <div class="logo-area">
+          <h1 class="game-title">Tipu atau Betul?</h1>
+          <p class="game-tagline">Protect your savings. Spot the scam.</p>
+        </div>
+
+        <div class="menu-sections">
+
+          <!-- DIFFICULTY -->
+          <div class="menu-section">
+            <p class="section-label">Difficulty</p>
+            <div class="difficulty-cards">
+
+              <div class="difficulty-card" onclick="selectDifficulty('easy')" id="card-easy">
+                <span class="diff-emoji">👴</span>
+                <h3 class="diff-name">Warga</h3>
+                <p class="diff-desc">Obvious scams. Suitable for everyone.</p>
+                <div class="diff-stats">
+                  <span>⏱ 20 seconds</span>
+                  <span>📉 Lower losses</span>
+                </div>
+              </div>
+
+              <div class="difficulty-card selected" onclick="selectDifficulty('normal')" id="card-normal">
+                <span class="diff-badge">RECOMMENDED</span>
+                <span class="diff-emoji">🧑</span>
+                <h3 class="diff-name">Biasa</h3>
+                <p class="diff-desc">Everyday scams targeting Malaysians.</p>
+                <div class="diff-stats">
+                  <span>⏱ 15 seconds</span>
+                  <span>📉 Moderate losses</span>
+                </div>
+              </div>
+
+              <div class="difficulty-card" onclick="selectDifficulty('hard')" id="card-hard">
+                <span class="diff-emoji">🕵️</span>
+                <h3 class="diff-name">Penganalisis</h3>
+                <p class="diff-desc">Sophisticated, subtle scams. Expert only.</p>
+                <div class="diff-stats">
+                  <span>⏱ 8 seconds</span>
+                  <span>📉 Heavy losses</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- MODE -->
+          <div class="menu-section">
+            <p class="section-label">Game Mode</p>
+            <div class="mode-selector">
+
+              <div class="mode-card selected" onclick="selectMode('classic')" id="mode-classic">
+                <span class="mode-icon">🎯</span>
+                <div class="mode-info">
+                  <h3>Classic</h3>
+                  <p>10 cases. Fixed endpoint. Try to finish with savings intact.</p>
+                </div>
+              </div>
+
+              <div class="mode-card" onclick="selectMode('survival')" id="mode-survival">
+                <span class="mode-icon">♾️</span>
+                <div class="mode-info">
+                  <h3>Survival</h3>
+                  <p>Infinite cases. Survive as long as you can. Game ends when savings hit RM 0.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- START BUTTON -->
+        <button class="start-btn" onclick="startGame()">Start Investigation →</button>
+
+        <div class="high-score-area">
+          <p>Best Savings Record: <strong id="high-score-display">—</strong></p>
+          <p>Best Survival: <strong id="survival-score-display">—</strong> cases</p>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ================================
+         SCREEN 2: GAME
+    ================================ -->
+    <div id="game-screen" class="screen">
+      <div class="game-container">
+
+        <!-- TOP BAR -->
+        <div class="top-bar">
+
+          <div class="savings-display">
+            <span class="top-label">💰 Savings</span>
+            <span id="savings-amount" class="savings-amount">RM 10,000</span>
+          </div>
+
+          <div class="mode-indicator" id="mode-indicator">
+            <span id="mode-label-text">CLASSIC</span>
+          </div>
+
+          <div class="streak-display">
+            <span class="top-label">🔥 Streak</span>
+            <span id="streak-count">0</span>
+            <span id="multiplier-display" class="multiplier-badge">x1</span>
+          </div>
+
+        </div>
+
+        <!-- SECONDARY BAR: hints and progress -->
+        <div class="secondary-bar">
+          <div class="hints-display">
+            <span class="top-label">🔍 Hints</span>
+            <div id="hint-tokens" class="hint-tokens">
+              <span class="hint-token" id="hint-1">●</span>
+              <span class="hint-token" id="hint-2">●</span>
+              <span class="hint-token" id="hint-3">●</span>
+            </div>
+          </div>
+          <div class="case-counter-display">
+            <span class="top-label">📁 Cases</span>
+            <span id="case-counter-top">1</span>
+            <span id="case-total-top" class="case-total">/ 10</span>
+          </div>
+        </div>
+
+        <!-- TIMER BAR -->
+        <div class="timer-container">
+          <div id="timer-bar" class="timer-bar"></div>
+          <span id="timer-text" class="timer-text">15</span>
+        </div>
+
+        <!-- PROGRESS BAR (Classic only) -->
+        <div class="progress-row" id="progress-row">
+          <span id="progress-text" class="progress-text">Case 1 / 10</span>
+          <div class="progress-track">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <!-- SAVINGS BAR (Survival only) -->
+        <div class="savings-row hidden" id="savings-row">
+          <span class="progress-text">Savings remaining</span>
+          <div class="progress-track">
+            <div id="savings-fill" class="progress-fill savings-track-fill"></div>
+          </div>
+        </div>
+
+        <!-- CASE FILE -->
+        <div class="case-file" id="case-file">
+
+          <!-- VICTIM PROFILE -->
+          <div class="victim-profile">
+            <div id="victim-avatar" class="victim-avatar">👩</div>
+            <div class="victim-info">
+              <p id="victim-name" class="victim-name">Loading...</p>
+              <p id="victim-details" class="victim-details">Loading case...</p>
+            </div>
+            <div class="case-badge">
+              <span>CASE</span>
+              <strong id="case-number">01</strong>
+            </div>
+          </div>
+
+          <!-- MESSAGE -->
+          <div class="message-area">
+            <p id="message-type-label" class="message-type-label">📱 WhatsApp</p>
+            <div id="message-bubble" class="message-bubble">
+              <p id="scenario-text">Loading case...</p>
+            </div>
+          </div>
+
+          <!-- HINT BUTTON -->
+          <button id="semak-btn" class="semak-btn" onclick="useHint()">
+            🔍 Reveal Red Flag
+          </button>
+
+        </div>
+
+        <!-- ANSWER BUTTONS -->
+        <div class="answer-buttons">
+          <button id="tipu-btn" class="answer-btn tipu-btn" onclick="checkAnswer('scam')">
+            <span class="btn-icon">🚩</span>
+            <span class="btn-label">SCAM</span>
+            <span class="btn-sub">This is a scam</span>
+          </button>
+          <button id="betul-btn" class="answer-btn betul-btn" onclick="checkAnswer('real')">
+            <span class="btn-icon">✅</span>
+            <span class="btn-label">REAL</span>
+            <span class="btn-sub">This is legitimate</span>
+          </button>
+        </div>
+
+        <!-- FEEDBACK BOX -->
+        <div id="feedback-box" class="feedback-box hidden">
+          <div class="feedback-header">
+            <span id="feedback-verdict" class="feedback-verdict"></span>
+            <span id="scam-category-badge" class="scam-category-badge"></span>
+          </div>
+          <p id="feedback-explanation" class="feedback-explanation"></p>
+          <div id="money-change" class="money-change"></div>
+          <button class="next-btn" onclick="nextQuestion()">Next Case →</button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ================================
+         SCREEN 3: GAME OVER
+    ================================ -->
+    <div id="gameover-screen" class="screen">
+      <div class="gameover-container">
+
+        <div class="gameover-icon">💸</div>
+        <h1 class="gameover-title">You've Been Scammed Clean</h1>
+        <p class="gameover-subtitle">Your savings are gone. The scammers won this time.</p>
+
+        <div class="gameover-savings-box">
+          <span>Final Balance</span>
+          <strong>RM 0</strong>
+        </div>
+
+        <div class="survival-cases-box" id="survival-cases-box">
+          <span>Cases Survived</span>
+          <strong id="survival-case-count">0</strong>
+        </div>
+
+        <div id="gameover-missed" class="gameover-missed"></div>
+
+        <div class="end-buttons">
+          <button class="play-again-btn" onclick="resetGame()">Play Again 🔄</button>
+          <button class="menu-btn" onclick="showScreen('menu-screen')">Menu</button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ================================
+         SCREEN 4: RESULTS (Classic only)
+    ================================ -->
+    <div id="results-screen" class="screen">
+      <div class="results-container">
+
+        <h1 class="results-title">Investigation Complete</h1>
+
+        <div class="results-savings-card">
+          <p class="results-savings-label">Savings Protected</p>
+          <p id="final-savings" class="results-savings-amount">RM 10,000</p>
+          <p id="results-rating" class="results-rating">Loading...</p>
+        </div>
+
+        <div class="results-stats">
+          <div class="stat-box">
+            <strong id="correct-count">0</strong>
+            <span>Correct</span>
+          </div>
+          <div class="stat-box">
+            <strong id="wrong-count">0</strong>
+            <span>Wrong</span>
+          </div>
+          <div class="stat-box">
+            <strong id="best-streak-display">0</strong>
+            <span>Best Streak</span>
+          </div>
+        </div>
+
+        <div class="category-breakdown">
+          <h3>Scam Types You Missed</h3>
+          <div id="category-list"></div>
+        </div>
+
+        <div class="end-buttons">
+          <button class="play-again-btn" onclick="resetGame()">Play Again 🔄</button>
+          <button class="menu-btn" onclick="showScreen('menu-screen')">Menu</button>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+
+  </body>
+</html>
+
