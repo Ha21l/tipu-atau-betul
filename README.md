@@ -69,7 +69,7 @@ Scams cost Malaysians billions of ringgit every year. This game exists to make s
 No installation needed.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/tipu-atau-betul.git
+git clone https://github.com/Ha21l/tipu-atau-betul.git
 cd tipu-atau-betul
 ```
 
